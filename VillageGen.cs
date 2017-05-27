@@ -40,10 +40,25 @@ public class VillageGen : MonoBehaviour {
             float z = center.transform.position.z + (6.5f * Mathf.Cos(rot * Mathf.Deg2Rad));
             float y = terr.SampleHeight(new Vector3(x, 100f, z));
             Vector3 pos = new Vector3(x, y, z);
+
+            
             var lookPos = pos-center.transform.position;
             lookPos.y = 0;
             Quaternion rotation = Quaternion.LookRotation(lookPos);
-            Instantiate(stall, pos, rotation).transform.SetParent(transform);
+
+            RaycastHit hitt;
+
+            if (Physics.Raycast(pos + (Vector3.up * 0.1f), -Vector3.up, out hitt, 3f))
+            {
+                
+            }
+
+
+            GameObject obj = Instantiate(stall, pos, rotation);
+            obj.transform.SetParent(transform);
+            obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hitt.normal) * obj.transform.rotation;
+
+
 
             rot += Random.Range(40f, 360f/stallCount);
         }
